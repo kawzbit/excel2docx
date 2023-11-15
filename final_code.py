@@ -35,12 +35,13 @@ def modify_dict(d, prefix):
 
 
 df = pd.read_excel(excel_path, sheet_name="Sheet1")
+
+#replace nan values so that they are not rendered in the docx template
 df = df.replace(np.nan, "", regex=True)
 
 for record in df.to_dict(orient="records"):
     modify_dict(record, "PB")
     doc = DocxTemplate(word_template_path)
-    # print(record)
     doc.render(record)
     output_path = output_dir / f"{record['NAME']}.docx"
     doc.save(output_path)
